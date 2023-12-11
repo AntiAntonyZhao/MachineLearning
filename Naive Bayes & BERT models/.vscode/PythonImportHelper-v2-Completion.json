@@ -1,0 +1,275 @@
+[
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "BertTokenizer",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "BertForSequenceClassification",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "DataLoader",
+        "importPath": "torch.utils.data",
+        "description": "torch.utils.data",
+        "isExtraImport": true,
+        "detail": "torch.utils.data",
+        "documentation": {}
+    },
+    {
+        "label": "Dataset",
+        "importPath": "torch.utils.data",
+        "description": "torch.utils.data",
+        "isExtraImport": true,
+        "detail": "torch.utils.data",
+        "documentation": {}
+    },
+    {
+        "label": "torch",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torch",
+        "description": "torch",
+        "detail": "torch",
+        "documentation": {}
+    },
+    {
+        "label": "accuracy_score",
+        "importPath": "sklearn.metrics",
+        "description": "sklearn.metrics",
+        "isExtraImport": true,
+        "detail": "sklearn.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "tqdm",
+        "importPath": "tqdm",
+        "description": "tqdm",
+        "isExtraImport": true,
+        "detail": "tqdm",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib.pyplot",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib.pyplot",
+        "description": "matplotlib.pyplot",
+        "detail": "matplotlib.pyplot",
+        "documentation": {}
+    },
+    {
+        "label": "seaborn",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "seaborn",
+        "description": "seaborn",
+        "detail": "seaborn",
+        "documentation": {}
+    },
+    {
+        "label": "string",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "string",
+        "description": "string",
+        "detail": "string",
+        "documentation": {}
+    },
+    {
+        "label": "EmotionDataset",
+        "kind": 6,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "class EmotionDataset(Dataset):\n    def __init__(self, texts, labels, tokenizer, max_len=128):\n        self.texts = texts\n        self.labels = labels\n        self.tokenizer = tokenizer\n        self.max_len = max_len\n    def __len__(self):\n        return len(self.texts)\n    def __getitem__(self, idx):\n        text = self.texts[idx]",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "load_data_from_jsonl",
+        "kind": 2,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "def load_data_from_jsonl(file_path):\n    data = []\n    with open(file_path, 'r') as file:\n        for line in file:\n            data.append(json.loads(line))\n    return data\n# Load data from the provided JSONL files\ntrain_data = load_data_from_jsonl('data/train.jsonl')\ntest_data = load_data_from_jsonl('data/test.jsonl')\n# Extract texts and labels for training and testing",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "train_eval_bert_model",
+        "kind": 2,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "def train_eval_bert_model(model, train_dataset, test_dataset, epochs=2, batch_size=64):\n    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)\n    test_loader = DataLoader(test_dataset, batch_size=batch_size)\n    device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n    model.to(device)\n    optimizer = torch.optim.AdamW(model.parameters(), lr=2e-5)\n    for epoch in range(epochs):\n        model.train()\n        # Wrap the train_loader with tqdm for a progress bar\n        for batch in tqdm(train_loader, desc=f\"Training Epoch {epoch+1}/{epochs}\"):",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "split_sentence",
+        "kind": 2,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "def split_sentence(sentence):\n    sentence = sentence.translate(str.maketrans('', '', string.punctuation))\n    words = sentence.split()\n    ans = \" \".join(words[3:16])\n    return ans\ndef get_layer(layer, attention, shape):\n  attention = attention[layer][0][layer].detach()/shape\n  return attention\n#chosen layer to generate attention matrix\nlayer = 6",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "get_layer",
+        "kind": 2,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "def get_layer(layer, attention, shape):\n  attention = attention[layer][0][layer].detach()/shape\n  return attention\n#chosen layer to generate attention matrix\nlayer = 6\ndef createAttentionMatrix(review, layer, color, index, correct=True):\n    review = split_sentence(review)\n    print(review)\n    tk = [['[CLS]'] + tokenizer.tokenize(t)[:768] for t in [review]]\n    tks = torch.tensor([tokenizer.convert_tokens_to_ids(tokens) for tokens in tk], dtype=torch.int)",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "createAttentionMatrix",
+        "kind": 2,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "def createAttentionMatrix(review, layer, color, index, correct=True):\n    review = split_sentence(review)\n    print(review)\n    tk = [['[CLS]'] + tokenizer.tokenize(t)[:768] for t in [review]]\n    tks = torch.tensor([tokenizer.convert_tokens_to_ids(tokens) for tokens in tk], dtype=torch.int)\n    tks = torch.nn.utils.rnn.pad_sequence(tks, batch_first=True, padding_value=0)\n    # Enable the output of attention weights\n    model_output = model.cpu()(tks, output_attentions=True)\n    attentionOutput = model_output.attentions\n    att = get_layer(layer, attentionOutput, tks.shape[1])",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "train_data",
+        "kind": 5,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "train_data = load_data_from_jsonl('data/train.jsonl')\ntest_data = load_data_from_jsonl('data/test.jsonl')\n# Extract texts and labels for training and testing\ntrain_texts = [entry['text'] for entry in train_data]\ntrain_labels = [entry['label'] for entry in train_data]\ntest_texts = [entry['text'] for entry in test_data]\ntest_labels = [entry['label'] for entry in test_data]\n# Load pre-trained BERT tokenizer\ntokenizer = BertTokenizer.from_pretrained('bert-base-uncased')\n# Dataset class for handling the text data",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "test_data",
+        "kind": 5,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "test_data = load_data_from_jsonl('data/test.jsonl')\n# Extract texts and labels for training and testing\ntrain_texts = [entry['text'] for entry in train_data]\ntrain_labels = [entry['label'] for entry in train_data]\ntest_texts = [entry['text'] for entry in test_data]\ntest_labels = [entry['label'] for entry in test_data]\n# Load pre-trained BERT tokenizer\ntokenizer = BertTokenizer.from_pretrained('bert-base-uncased')\n# Dataset class for handling the text data\nclass EmotionDataset(Dataset):",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "train_texts",
+        "kind": 5,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "train_texts = [entry['text'] for entry in train_data]\ntrain_labels = [entry['label'] for entry in train_data]\ntest_texts = [entry['text'] for entry in test_data]\ntest_labels = [entry['label'] for entry in test_data]\n# Load pre-trained BERT tokenizer\ntokenizer = BertTokenizer.from_pretrained('bert-base-uncased')\n# Dataset class for handling the text data\nclass EmotionDataset(Dataset):\n    def __init__(self, texts, labels, tokenizer, max_len=128):\n        self.texts = texts",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "train_labels",
+        "kind": 5,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "train_labels = [entry['label'] for entry in train_data]\ntest_texts = [entry['text'] for entry in test_data]\ntest_labels = [entry['label'] for entry in test_data]\n# Load pre-trained BERT tokenizer\ntokenizer = BertTokenizer.from_pretrained('bert-base-uncased')\n# Dataset class for handling the text data\nclass EmotionDataset(Dataset):\n    def __init__(self, texts, labels, tokenizer, max_len=128):\n        self.texts = texts\n        self.labels = labels",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "test_texts",
+        "kind": 5,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "test_texts = [entry['text'] for entry in test_data]\ntest_labels = [entry['label'] for entry in test_data]\n# Load pre-trained BERT tokenizer\ntokenizer = BertTokenizer.from_pretrained('bert-base-uncased')\n# Dataset class for handling the text data\nclass EmotionDataset(Dataset):\n    def __init__(self, texts, labels, tokenizer, max_len=128):\n        self.texts = texts\n        self.labels = labels\n        self.tokenizer = tokenizer",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "test_labels",
+        "kind": 5,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "test_labels = [entry['label'] for entry in test_data]\n# Load pre-trained BERT tokenizer\ntokenizer = BertTokenizer.from_pretrained('bert-base-uncased')\n# Dataset class for handling the text data\nclass EmotionDataset(Dataset):\n    def __init__(self, texts, labels, tokenizer, max_len=128):\n        self.texts = texts\n        self.labels = labels\n        self.tokenizer = tokenizer\n        self.max_len = max_len",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "tokenizer",
+        "kind": 5,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')\n# Dataset class for handling the text data\nclass EmotionDataset(Dataset):\n    def __init__(self, texts, labels, tokenizer, max_len=128):\n        self.texts = texts\n        self.labels = labels\n        self.tokenizer = tokenizer\n        self.max_len = max_len\n    def __len__(self):\n        return len(self.texts)",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "train_dataset",
+        "kind": 5,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "train_dataset = EmotionDataset(train_texts, train_labels, tokenizer)\ntest_dataset = EmotionDataset(test_texts, test_labels, tokenizer)\n# Load pre-trained BERT model for sequence classification\nmodel = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=len(set(train_labels)))\n# Function to train and evaluate the model\ndef train_eval_bert_model(model, train_dataset, test_dataset, epochs=2, batch_size=64):\n    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)\n    test_loader = DataLoader(test_dataset, batch_size=batch_size)\n    device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n    model.to(device)",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "test_dataset",
+        "kind": 5,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "test_dataset = EmotionDataset(test_texts, test_labels, tokenizer)\n# Load pre-trained BERT model for sequence classification\nmodel = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=len(set(train_labels)))\n# Function to train and evaluate the model\ndef train_eval_bert_model(model, train_dataset, test_dataset, epochs=2, batch_size=64):\n    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)\n    test_loader = DataLoader(test_dataset, batch_size=batch_size)\n    device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n    model.to(device)\n    optimizer = torch.optim.AdamW(model.parameters(), lr=2e-5)",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "model",
+        "kind": 5,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=len(set(train_labels)))\n# Function to train and evaluate the model\ndef train_eval_bert_model(model, train_dataset, test_dataset, epochs=2, batch_size=64):\n    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)\n    test_loader = DataLoader(test_dataset, batch_size=batch_size)\n    device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n    model.to(device)\n    optimizer = torch.optim.AdamW(model.parameters(), lr=2e-5)\n    for epoch in range(epochs):\n        model.train()",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "correctList",
+        "kind": 5,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "correctList = []\nincorrectList = []\n# Ensure test_labels is a list or convert it to a list\ntest_labels_list = list(test_labels)\nfor i in range(len(test_labels_list)):\n    if test_labels_list[i] == predictions[i]:\n        if len(correctList) < 20:\n            correctList.append(test_texts[i])\n    else:\n        if len(incorrectList) < 12:",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "incorrectList",
+        "kind": 5,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "incorrectList = []\n# Ensure test_labels is a list or convert it to a list\ntest_labels_list = list(test_labels)\nfor i in range(len(test_labels_list)):\n    if test_labels_list[i] == predictions[i]:\n        if len(correctList) < 20:\n            correctList.append(test_texts[i])\n    else:\n        if len(incorrectList) < 12:\n            incorrectList.append(test_texts[i])",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "test_labels_list",
+        "kind": 5,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "test_labels_list = list(test_labels)\nfor i in range(len(test_labels_list)):\n    if test_labels_list[i] == predictions[i]:\n        if len(correctList) < 20:\n            correctList.append(test_texts[i])\n    else:\n        if len(incorrectList) < 12:\n            incorrectList.append(test_texts[i])\n    if len(correctList) >= 20 and len(incorrectList) >= 12:\n        break",
+        "detail": "fix",
+        "documentation": {}
+    },
+    {
+        "label": "layer",
+        "kind": 5,
+        "importPath": "fix",
+        "description": "fix",
+        "peekOfCode": "layer = 6\ndef createAttentionMatrix(review, layer, color, index, correct=True):\n    review = split_sentence(review)\n    print(review)\n    tk = [['[CLS]'] + tokenizer.tokenize(t)[:768] for t in [review]]\n    tks = torch.tensor([tokenizer.convert_tokens_to_ids(tokens) for tokens in tk], dtype=torch.int)\n    tks = torch.nn.utils.rnn.pad_sequence(tks, batch_first=True, padding_value=0)\n    # Enable the output of attention weights\n    model_output = model.cpu()(tks, output_attentions=True)\n    attentionOutput = model_output.attentions",
+        "detail": "fix",
+        "documentation": {}
+    }
+]
