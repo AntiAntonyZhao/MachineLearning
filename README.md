@@ -5,15 +5,15 @@ This repository contains a series of projects completed as part of the COMP 551 
 ## Projects Overview
 
 ### 1. Linear Regression and Logistic Regression with gradient descent
-- **Key Concepts**: Regression analysis, classification, gradient descent.
-- **Datasets**:
+#### **Key Concepts**: Regression analysis, classification, gradient descent.
+#### **Datasets**:
 - Boston Housing dataset: Comprises 506 data samples with 13 real attributes (excluding 'B' due to ethical concerns). The target is the median value of owner-occupied homes.
 - Wine dataset: Consists of 178 data samples with 13 attributes, distributed across three classes.
-- **Models**:
+#### **Models**:
 - Implement analytical linear regression for the Boston Housing dataset.
 - Implement logistic regression with gradient descent for the Wine dataset.
 - Implement mini-batch stochastic gradient descent for both models.
-- **Experiments**:
+#### **Experiments**:
 - Perform 80/20 train/test splits and report performance metrics.
 - Use 5-fold cross-validation for performance metrics.
 - Experiment with training data sizes and minibatch sizes to observe performance impacts.
